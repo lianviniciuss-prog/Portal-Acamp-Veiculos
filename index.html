@@ -134,18 +134,7 @@
 
   <form id="form" novalidate>
     <div class="card">
-      <h2>1 · Tipo de acesso</h2>
-      <div class="choices">
-        <label class="choice"><input type="radio" name="tipoAcesso" value="avulso">
-          <div><b>Autorização de entrada (por evento)</b><small>Você vai pra um ou mais eventos (culto, palestra) e vai embora depois. Seu nome fica na lista da portaria.</small></div></label>
-        <label class="choice"><input type="radio" name="tipoAcesso" value="adesivo">
-          <div><b>Adesivo (entra e sai várias vezes)</b><small>Só pra quem precisa entrar e sair durante o acampamento (equipe, logística, cozinha, fornecedor). A coordenação avalia a justificativa.</small></div></label>
-      </div>
-      <div class="err hide" data-err="tipoAcesso">Escolha o tipo de acesso.</div>
-    </div>
-
-    <div class="card">
-      <h2>2 · Responsável pelo veículo</h2>
+      <h2>1 · Responsável pelo veículo</h2>
       <label class="f" for="nome">Nome completo</label>
       <input type="text" id="nome" maxlength="90" autocomplete="name">
       <div class="err hide" data-err="nome">Informe o nome completo.</div>
@@ -164,7 +153,7 @@
     </div>
 
     <div class="card">
-      <h2>3 · Veículo</h2>
+      <h2>2 · Veículo</h2>
       <div class="chips" id="veicChips">
         <label class="chip"><input type="radio" name="veiculoTipo" value="Carro"> 🚗 Carro</label>
         <label class="chip"><input type="radio" name="veiculoTipo" value="Moto"> 🏍️ Moto</label>
@@ -193,38 +182,16 @@
     </div>
 
     <!-- Avulso -->
-    <div class="card hide" id="secAvulso">
-      <h2>4 · Pra qual evento você vai?</h2>
+    <div class="card" id="secAvulso">
+      <h2>3 · Motivo da visita</h2>
+      <p class="sub" style="margin:-4px 0 10px">Por que você vai entrar no acampamento com o veículo? Pode marcar mais de um.</p>
       <div class="choices" id="eventos"></div>
       <div id="outroBox" class="hide">
         <label class="f" for="outroMotivo">Qual o motivo?</label>
-        <textarea id="outroMotivo" maxlength="300" placeholder="Explique por que precisa entrar e em que dia/horário"></textarea>
+        <textarea id="outroMotivo" maxlength="300" placeholder="Escreva o motivo e em que dia/horário você vai entrar"></textarea>
         <div class="err hide" data-err="outroMotivo">Escreva o motivo.</div>
       </div>
-      <div class="err hide" data-err="eventos">Marque pelo menos um evento.</div>
-    </div>
-
-    <!-- Adesivo -->
-    <div class="card hide" id="secAdesivo">
-      <h2>4 · Por que você precisa do adesivo?</h2>
-      <label class="f" for="funcao">Sua função no acampamento</label>
-      <select id="funcao">
-        <option value="">Selecione…</option>
-        <option>Organização / Diretoria</option>
-        <option>Logística</option>
-        <option>Cozinha</option>
-        <option>Equipe de saúde</option>
-        <option>Ministrante / Palestrante</option>
-        <option>Fornecedor / Entregas</option>
-        <option>Outro</option>
-      </select>
-      <div class="err hide" data-err="funcao">Selecione a função.</div>
-      <label class="f">Em quais dias vai entrar e sair?</label>
-      <div class="chips" id="dias"></div>
-      <div class="err hide" data-err="dias">Marque pelo menos um dia.</div>
-      <label class="f" for="justificativa">Explique por que precisa entrar e sair várias vezes</label>
-      <textarea id="justificativa" maxlength="400" placeholder="Ex: vou buscar mantimentos na cidade sexta e sábado"></textarea>
-      <div class="err hide" data-err="justificativa">Explique com pelo menos 15 caracteres.</div>
+      <div class="err hide" data-err="eventos">Marque pelo menos um motivo.</div>
     </div>
 
     <div class="card">
@@ -242,7 +209,7 @@
     <div class="big">✅</div>
     <h2>Cadastro enviado!</h2>
     <p><span class="plate" id="donePlaca"></span></p>
-    <p class="sub">Agora é com a coordenação. Você vai receber a confirmação pelo WhatsApp. <b>Mostrar este cadastro não libera a entrada</b>, só a aprovação libera.</p>
+    <p class="sub">Agora é com a coordenação. Você vai receber a confirmação pelo WhatsApp. <b>Mostrar este cadastro não libera a entrada</b>, só a aprovação libera: aí seu veículo entra na lista da portaria.</p>
     <button class="btn btn-ghost" id="btnNovo" type="button">Cadastrar outro veículo</button>
   </div>
 
@@ -272,7 +239,7 @@
     </div>
     <div class="card">
       <div class="bar">
-        <select id="fTipo" style="width:auto"><option value="">Todos os tipos</option><option value="adesivo">Adesivo</option><option value="avulso">Por evento</option></select>
+        <select id="fTipo" class="hide"><option value=""></option></select>
         <select id="fStatus" style="width:auto"><option value="">Todos os status</option><option value="pendente">Pendentes</option><option value="aprovado">Aprovados</option><option value="recusado">Recusados</option></select>
         <select id="fEvento" style="width:auto"></select>
         <input type="text" id="fBusca" placeholder="Buscar placa, nome, igreja…" style="flex:1;min-width:180px">
@@ -325,9 +292,10 @@ try {
 
 const EVENTOS = [
   { id:"sex_noite", nome:"Culto de sexta à noite", data:"20/11" },
-  { id:"sab_manha", nome:"Palestra de sábado de manhã", data:"21/11" },
   { id:"sab_noite", nome:"Culto de sábado à noite", data:"21/11" },
-  { id:"outro",     nome:"Outro motivo", data:"" }
+  { id:"dom_manha", nome:"Culto de domingo de manhã", data:"22/11" },
+  { id:"lider",     nome:"Líder acampante", data:"Líder que vai acampar com a galera" },
+  { id:"outro",     nome:"Outro", data:"" }
 ];
 const DIAS = [ {id:"sex",nome:"Sex 20/11"}, {id:"sab",nome:"Sáb 21/11"}, {id:"dom",nome:"Dom 22/11"} ];
 const evNome = id => (EVENTOS.find(e=>e.id===id)||{}).nome || id;
@@ -377,17 +345,11 @@ function initPublic(){
 
   $("#eventos").innerHTML = EVENTOS.map(e =>
     `<label class="choice"><input type="checkbox" name="eventos" value="${e.id}"><div><b>${e.nome}</b>${e.data?`<small>${e.data}</small>`:`<small>Escreva o motivo abaixo</small>`}</div></label>`).join("");
-  $("#dias").innerHTML = DIAS.map(d => `<label class="chip"><input type="checkbox" name="dias" value="${d.id}"> ${d.nome}</label>`).join("");
 
   // destaque visual de selecionados
   document.addEventListener("change", e => {
     if (e.target.matches(".choice input, .chip input")) {
       $$(".choice input, .chip input").forEach(i => i.closest(".choice,.chip").classList.toggle("on", i.checked));
-    }
-    if (e.target.name === "tipoAcesso") {
-      const t = e.target.value;
-      $("#secAvulso").classList.toggle("hide", t!=="avulso");
-      $("#secAdesivo").classList.toggle("hide", t!=="adesivo");
     }
     if (e.target.name === "eventos") {
       $("#outroBox").classList.toggle("hide", !$('input[name=eventos][value=outro]').checked);
@@ -409,7 +371,7 @@ function initPublic(){
 function coletar(){
   const g = n => (document.querySelector(`input[name=${n}]:checked`)||{}).value || "";
   const gl = n => $$(`input[name=${n}]:checked`).map(i=>i.value);
-  const tipo = g("tipoAcesso");
+  const tipo = "avulso"; // só autorização por evento
   return {
     placa: normPlaca($("#placa").value),
     tipoAcesso: tipo,
@@ -431,7 +393,6 @@ function coletar(){
 
 function validar(d){
   const e = [];
-  if (!d.tipoAcesso) e.push("tipoAcesso");
   if (d.nome.length < 5 || !d.nome.includes(" ")) e.push("nome");
   if (d.whatsapp.length < 10) e.push("whatsapp");
   if (d.igreja.length < 2) e.push("igreja");
@@ -443,11 +404,6 @@ function validar(d){
   if (d.tipoAcesso==="avulso"){
     if (!d.eventos.length) e.push("eventos");
     if (d.eventos.includes("outro") && d.outroMotivo.length < 5) e.push("outroMotivo");
-  }
-  if (d.tipoAcesso==="adesivo"){
-    if (!d.funcao) e.push("funcao");
-    if (!d.dias.length) e.push("dias");
-    if (d.justificativa.length < 15) e.push("justificativa");
   }
   if (!d.lgpd) e.push("lgpd");
   return e;
@@ -475,7 +431,7 @@ async function enviar(ev){
   }catch(err){
     console.error(err);
     if (err.code === "permission-denied")
-      showFormErr(`A placa ${d.placa} já tem um cadastro. Se precisar mudar alguma coisa (outro evento, adesivo), fale com a logística no WhatsApp.`);
+      showFormErr(`A placa ${d.placa} já tem um cadastro. Se precisar mudar alguma coisa (incluir outro evento), fale com a logística no WhatsApp.`);
     else
       showFormErr("Não deu pra enviar agora. Confira a internet e tente de novo.");
   }finally{ btn.disabled=false; btn.textContent="Enviar cadastro"; }
@@ -488,7 +444,7 @@ let unsub = null;
 
 function initAdmin(){
   $("#adm").classList.remove("hide");
-  $("#fEvento").innerHTML = `<option value="">Todos os eventos</option>` + EVENTOS.map(e=>`<option value="${e.id}">${e.nome}</option>`).join("");
+  $("#fEvento").innerHTML = `<option value="">Todos os motivos</option>` + EVENTOS.map(e=>`<option value="${e.id}">${e.nome}</option>`).join("");
   if (!configured){ $("#loginBox").classList.remove("hide"); $("#loginErr").textContent="Falta colar o firebaseConfig no código."; $("#loginErr").classList.remove("hide"); return; }
 
   $("#btnLogin").addEventListener("click", async () => {
@@ -533,8 +489,8 @@ function render(){
   $("#stats").innerHTML = [
     ["Cadastros", all.length],
     ["Pendentes", c(d=>d.status==="pendente")],
-    ["Adesivos aprovados", c(d=>d.status==="aprovado"&&d.tipoAcesso==="adesivo")],
-    ["Entradas aprovadas", c(d=>d.status==="aprovado"&&d.tipoAcesso==="avulso")],
+    ["Aprovados", c(d=>d.status==="aprovado")],
+    ["Recusados", c(d=>d.status==="recusado")],
     ...EVENTOS.filter(e=>e.id!=="outro").map(e => [`Pessoas · ${e.nome.replace("Culto de ","").replace("Palestra de ","Palestra ")}`, pessoasEv(e.id)])
   ].map(([l,n]) => `<div class="stat"><div class="n">${n}</div><div class="l">${esc(l)}</div></div>`).join("");
 
@@ -542,13 +498,13 @@ function render(){
   if (!lst.length){ $("#lista").innerHTML = `<div class="card sub" style="text-align:center">Nenhum cadastro ${all.length?"com esse filtro":"ainda"}.</div>`; return; }
   $("#lista").innerHTML = lst.map(d => {
     const motivo = d.tipoAcesso==="avulso"
-      ? `<b>Eventos:</b> ${(d.eventos||[]).map(evNome).map(esc).join(", ")}${d.outroMotivo?` · <b>Motivo:</b> ${esc(d.outroMotivo)}`:""}`
+      ? `<b>Motivo:</b> ${(d.eventos||[]).map(evNome).map(esc).join(", ")}${d.outroMotivo?` · <b>Outro:</b> ${esc(d.outroMotivo)}`:""}`
       : `<b>Função:</b> ${esc(d.funcao)} · <b>Dias:</b> ${(d.dias||[]).map(diaNome).join(", ")}<br><b>Justificativa:</b> ${esc(d.justificativa)}`;
     return `<div class="item">
       <div class="top">
         <div><span class="plate" style="font-size:20px">${esc(d.placa)}</span>
           ${d.numeroAdesivo?`<span class="num" style="margin-left:8px">ADESIVO Nº ${String(d.numeroAdesivo).padStart(3,"0")}</span>`:""}</div>
-        <div><span class="tag t-${d.tipoAcesso}">${d.tipoAcesso==="adesivo"?"Adesivo":"Por evento"}</span> <span class="tag t-${d.status}">${esc(d.status)}</span></div>
+        <div><span class="tag t-${d.status}">${esc(d.status)}</span></div>
       </div>
       <div class="meta"><b>${esc(d.nome)}</b> · ${esc(foneFmt(d.whatsapp))} · ${esc(d.igreja)}</div>
       <div class="meta">${esc(d.veiculoTipo)} ${esc(d.modelo)} ${esc(d.cor)} · ${d.pessoas} pessoa(s)</div>
@@ -570,7 +526,7 @@ function msgWhats(d){
   if (d.status==="aprovado" && d.tipoAcesso==="adesivo")
     return `Paz do Senhor, ${prim}! Seu adesivo do Acamp 2026 foi APROVADO para o veículo ${d.placa} (Nº ${String(d.numeroAdesivo).padStart(3,"0")}). Retire com a logística. O adesivo vale só para essa placa.`;
   if (d.status==="aprovado")
-    return `Paz do Senhor, ${prim}! Sua entrada no Acamp 2026 foi AUTORIZADA para o veículo ${d.placa} — ${(d.eventos||[]).map(evNome).join(", ")}. Seu nome está na lista da portaria.`;
+    return `Paz do Senhor, ${prim}! Sua entrada no Acamp 2026 foi AUTORIZADA para o veículo ${d.placa} (motivo: ${(d.eventos||[]).map(evNome).join(", ")}). Seu nome está na lista da portaria.`;
   if (d.status==="recusado")
     return `Paz do Senhor, ${prim}! Sobre o cadastro do veículo ${d.placa} para o Acamp 2026: não conseguimos liberar esse acesso. Qualquer dúvida, fale com a logística.`;
   return `Paz do Senhor, ${prim}! Recebemos o cadastro do veículo ${d.placa} para o Acamp 2026 e ele está em análise.`;
@@ -645,18 +601,12 @@ function gerarPdf(completo){
     y = pdf.lastAutoTable.finalY + 10;
   };
 
-  const ades = base.filter(d=>d.tipoAcesso==="adesivo").sort((a,b)=>(a.numeroAdesivo||999)-(b.numeroAdesivo||999));
-  tabela("ADESIVOS · entra e sai durante o acampamento",
-    ["Nº","Placa","Veículo","Responsável","WhatsApp","Igreja","Função","Dias", ...(completo?["Status"]:[])],
-    ades.map(d=>[ d.numeroAdesivo?String(d.numeroAdesivo).padStart(3,"0"):"—", d.placa, veic(d), d.nome, foneFmt(d.whatsapp), d.igreja, d.funcao,
-      (d.dias||[]).map(diaNome).join(", "), ...(completo?[d.status.toUpperCase()]:[]) ]),
-    `${ades.length} veículo(s)`);
 
   EVENTOS.forEach(ev => {
-    const l = base.filter(d=>d.tipoAcesso==="avulso" && (d.eventos||[]).includes(ev.id)).sort((a,b)=>a.placa.localeCompare(b.placa));
+    const l = base.filter(d=>(d.eventos||[]).includes(ev.id)).sort((a,b)=>a.placa.localeCompare(b.placa));
     const pes = l.reduce((a,d)=>a+(d.pessoas||0),0);
     const head = ["Placa","Veículo","Responsável","WhatsApp","Igreja","Pessoas", ...(ev.id==="outro"?["Motivo"]:[]), ...(completo?["Status"]:[])];
-    tabela(`ENTRADA · ${ev.nome.toUpperCase()}${ev.data?" ("+ev.data+")":""}`, head,
+    tabela(`ENTRADA · ${ev.nome.toUpperCase()}${/^\d/.test(ev.data)?" ("+ev.data+")":""}`, head,
       l.map(d=>[ d.placa, veic(d), d.nome, foneFmt(d.whatsapp), d.igreja, d.pessoas, ...(ev.id==="outro"?[d.outroMotivo]:[]), ...(completo?[d.status.toUpperCase()]:[]) ]),
       `${l.length} veículo(s) · ${pes} pessoa(s)`);
   });
@@ -669,7 +619,7 @@ function gerarPdf(completo){
 
 /* ---------- CSV ---------- */
 function gerarCsv(){
-  const cols = ["placa","status","tipoAcesso","numeroAdesivo","nome","whatsapp","igreja","veiculoTipo","modelo","cor","pessoas","eventos","outroMotivo","funcao","dias","justificativa"];
+  const cols = ["placa","status","nome","whatsapp","igreja","veiculoTipo","modelo","cor","pessoas","eventos","outroMotivo"];
   const linhas = [cols.join(";")].concat(filtrados().map(d => cols.map(k => {
     let v = d[k]; if (Array.isArray(v)) v = v.map(k==="eventos"?evNome:diaNome).join(", ");
     return `"${String(v ?? "").replace(/"/g,'""')}"`;
